@@ -1,0 +1,32 @@
+# GFLOPs  GMACs   Params.(M)
+#  1.45    0.72    0.668
+
+
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointPNEncoder_mlp
+    points: 1024
+    embed_dim: 48
+    groups: 1
+    res_expansion: 0.25
+    activation: "relu"
+    bias: False
+    use_xyz: False
+    normalize: "anchor"
+    dim_expansion: [ 2, 2, 2, 1 ]
+    pos_blocks: [ 1, 1, 1, 1 ]
+    k_neighbors: [ 24, 24, 24, 24 ]
+    reducers: [ 2, 2, 2, 2 ]
+    in_channels: 4
+  cls_args:
+    NAME: ClsHead
+    num_classes: 15
+    mlps: [576, 288] # 384 480 576 # 288 336 384
+    norm_args: 
+      norm: 'bn1d'
+      
+    # last_channel: 288
+    # activation: "relu"
+    # dropout: 0.5
+    # in_channels: 4

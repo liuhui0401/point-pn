@@ -1,0 +1,53 @@
+#CUDA_VISIBLE_DEVICES=5 python examples/profile.py --cfg cfgs/scanobjectnn/pointnp_next.yaml batch_size=128 num_points=1024 timing=True
+
+
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: pointnp_next
+    points: 1024
+    class_num: 40
+    embed_dim: 54 #84
+    groups: 1
+    res_expansion: 0.5 #1.0
+    activation: 'relu'
+    bias: False
+    use_xyz: False
+    normalize: 'anchor'
+    dim_expansion: [2,2,2,1]
+    pos_blocks: [1,1,1,1] #[2,2,2,2]
+    k_neighbors: [44,44,44,44] #[24,24,24,24]
+    reducers: [2,2,2,2]
+    wave_length: 1000
+    alpha: 100
+    
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 36
+    in_channels: 3
+    sa_layers: 2
+    sa_use_res: True
+    radius: 0.15
+    radius_scaling: 1.5
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: 'dp_fj'
+      reduction: 'max'
+    group_args:
+      NAME: 'ballquery'
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: 'relu'
+    norm_args:
+      norm: 'bn'
+  cls_args: 
+    NAME: classifier
+    num_classes: 40
+    last_channel: 432
+    in_channels: 3
+    mlps: [512, 256]
+    norm_args: 
+      norm: 'bn1d'

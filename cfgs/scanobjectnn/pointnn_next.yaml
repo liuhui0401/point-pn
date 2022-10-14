@@ -1,0 +1,50 @@
+# FLOPs	GMACs	Params.(M)
+#  1.64	 0.81	 1.367
+# 2040.039810480711
+
+
+# 24
+# GFLOPs  GMACs   Params.(M)
+#  1.23    0.61    0.970
+
+# 30 2222
+# GFLOPs  GMACs   Params.(M)
+#  1.44    0.71    1.202
+
+# 36 2222
+# GFLOPs  GMACs   Params.(M)
+#  2.07    1.03    1.728
+
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNN_next
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 3
+    sa_layers: 2
+    sa_use_res: True
+    radius: 0.15
+    radius_scaling: 1.5
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: 'dp_fj'
+      reduction: 'max'
+    group_args:
+      NAME: 'knn'
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: 'relu'
+    norm_args:
+      norm: 'bn'
+    
+  cls_args: 
+    NAME: ClsHead
+    num_classes: 15
+    mlps: [576, 288] # 384 480 576 # 288 336 384
+    norm_args: 
+      norm: 'bn1d'

@@ -1,0 +1,39 @@
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointPN_next
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 1, 1]
+    width: 54  # 24  30  36
+    in_channels: 3 
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: True
+    nsample: 40
+    expansion: 4
+    aggr_args:
+      feature_type: 'dp_fj'
+      reduction: 'max'
+    group_args:
+      NAME: 'knn'
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: 'relu'
+    norm_args:
+      norm: 'bn'
+  cls_args: 
+    NAME: ClsHead
+    num_classes: 40
+    mlps: [576, 288]
+    norm_args: 
+      norm: 'bn1d'
+  # cls_args:
+  #   NAME: Classifier
+  #   num_classes: 40
+  #   last_channel: 288  # 192  240   288  # 480 576
+  #   activation: "relu"
+  #   dropout: 0.5
+  #   in_channels: 3
